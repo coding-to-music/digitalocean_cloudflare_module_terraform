@@ -5,11 +5,11 @@ resource "digitalocean_ssh_key" "default" {
 }
 
 # Create a web server
-resource "digitalocean_droplet" "web" {
-  image              = "freebsd-11-1-x64-zfs"
-  name               = "web.mehulved.com"
-  region             = "nyc3"
-  size               = "1gb"
+resource "digitalocean_droplet" "instance" {
+  image              = ""
+  name               = "${var.instance_name}.${var.domain}"
+  region             = "${var.instance_region}"
+  size               = "${var.instance_size}"
   backups            = false
   monitoring         = false
   ipv6               = true
@@ -19,9 +19,9 @@ resource "digitalocean_droplet" "web" {
 }
 
 # Set DNS record to point to the web server
-resource "cloudflare_record" "web" {
-  domain             = "${var.cloudflare_domain}"
-  name               = "web"
+resource "cloudflare_record" "instance" {
+  domain             = "${var.domain}"
+  name               = "${var.name}"
   value              = "${digitalocean_droplet.web.ipv4_address}"
   type               = "A"
   ttl                = 3600
