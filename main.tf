@@ -6,7 +6,7 @@ resource "digitalocean_ssh_key" "default" {
 
 # Create a web server
 resource "digitalocean_droplet" "instance" {
-  image              = ""
+  image              = "${var.instance_image}"
   name               = "${var.instance_name}.${var.domain}"
   region             = "${var.instance_region}"
   size               = "${var.instance_size}"
