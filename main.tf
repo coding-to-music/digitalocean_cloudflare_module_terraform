@@ -1,7 +1,7 @@
 # Upload ssh key
 resource "digitalocean_ssh_key" "default" {
-  name               = "T400p SSD"
-  public_key         = "${file("ssh-keys/mehul.pub")}"
+  name               = "${var.ssh_keyname}"
+  public_key         = "${var.ssh_keypath}"
 }
 
 # Create a web server
@@ -21,8 +21,8 @@ resource "digitalocean_droplet" "instance" {
 # Set DNS record to point to the web server
 resource "cloudflare_record" "instance" {
   domain             = "${var.domain}"
-  name               = "${var.name}"
-  value              = "${digitalocean_droplet.web.ipv4_address}"
+  name               = "${var.instance_name}"
+  value              = "${digitalocean_droplet.instance.ipv4_address}"
   type               = "A"
   ttl                = 3600
   proxied            = false
